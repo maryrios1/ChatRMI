@@ -16,7 +16,8 @@ public class ChatRMI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Comenta
+        Chat x =  new Chat();
+        x.show();
         // TODO code application logic here
     }
     
