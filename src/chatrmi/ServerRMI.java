@@ -10,5 +10,5 @@ package chatrmi;
  * @author carcasti
  */
 public class ServerRMI {
-    
+    // TODO a real bad ass server
 }
