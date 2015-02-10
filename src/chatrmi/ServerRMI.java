@@ -7,7 +7,11 @@ package chatrmi;
 
 /**
  *
- * @author carcasti
+ *  @author Mary Carmen Ríos Ramírez
+ *  @author Laura Lizeth Heredia Manzano 
+ *  @author Carlos Iván Castillo Sepúlveda
+ *  @since 2015
+ * 
  */
 public class ServerRMI {
     // TODO a real bad ass server
