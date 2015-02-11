@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package chatrmi;
+package chatrmi.impl;
 
 /**
  *
@@ -13,6 +13,6 @@ package chatrmi;
  *  @since 2015
  * 
  */
-public class ServerRMI {
-    // TODO a real bad ass server
+public class ClientRMI {
+    
 }

@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package chatrmi;
-
-import chatrmi.ui.ClientChat;
+package chatrmi.impl;
 
 /**
  *
@@ -16,15 +13,6 @@ import chatrmi.ui.ClientChat;
  *  @since 2015
  * 
  */
-public class ChatRMI {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        ClientChat x =  new ClientChat();
-        x.show();
-        // TODO code application logic here
-    }
-    
+public class ServerRMI {
+    // TODO a real bad ass server
 }
