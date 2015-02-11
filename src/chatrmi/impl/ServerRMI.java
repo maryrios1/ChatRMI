@@ -13,6 +13,6 @@ package chatrmi.impl;
  *  @since 2015
  * 
  */
-public class ServerRMI {
+public class ServerRMI  {
     // TODO a real bad ass server
 }
