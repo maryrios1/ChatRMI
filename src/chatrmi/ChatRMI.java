@@ -6,7 +6,7 @@
 
 package chatrmi;
 
-import chatrmi.ui.ClientChat;
+import chatrmi.ui.LoginChat;
 
 /**
  *
@@ -22,7 +22,7 @@ public class ChatRMI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ClientChat x =  new ClientChat();
+        LoginChat x =  new LoginChat();
         x.show();
         // TODO code application logic here
     }
