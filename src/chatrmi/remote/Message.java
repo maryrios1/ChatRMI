@@ -6,6 +6,8 @@
 
 package chatrmi.remote;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -13,12 +15,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author mary
  */
-public class Message {
+public class Message extends UnicastRemoteObject {
     String UserName;
     String Message;
     Date TimeSend;
     
-    public Message(String usr, String msg ){
+    public Message(String usr, String msg ) throws RemoteException{
         this.UserName = usr;
         this.Message = msg;
         this.TimeSend = new Date();

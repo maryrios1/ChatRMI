@@ -35,6 +35,8 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         initComponents();
         try {
             clientRMI = new ClientRMI();
+            t=new Thread(this,"HiloMensajes");
+            t.start();
         }
         catch(Exception e){
             System.out.println("ERROR: Iniciar clase ClienteRMI");
@@ -201,9 +203,10 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
 
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
         // TODO add your handling code here:
-        Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
         try {
-            clientRMI.sendMessage(msg);
+            //Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
+            clientRMI.sendMessage(lbl_User.getText(),txtCurrentMsg.getText());
+            txtCurrentMsg.setText("");
         } catch (RemoteException ex) {
             Logger.getLogger("ERROR_SENT_MESSAGE: " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -289,7 +292,7 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         List <Message> listMessages = new ArrayList<Message>();
         try {
             String messageTemp="";
-            while (true){
+            //while (true){
                 listMessages = clientRMI.getMesssages();
                 
                 for (Message message : listMessages) {
@@ -304,7 +307,7 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
                 // Print a message
                 threadMessage("Lista de mensajes insertada");
                 
-            }
+            //}
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");
             

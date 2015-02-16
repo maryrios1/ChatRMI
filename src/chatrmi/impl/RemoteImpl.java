@@ -6,7 +6,6 @@
 package chatrmi.impl;
 import chatrmi.remote.InterfaceChat;
 import chatrmi.remote.Message;
-import chatrmi.remote.User;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -44,10 +43,11 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public void send(Message msg) throws RemoteException {
-        System.out.println(msg.getMessage());
-        listMessages.add(msg);
-        sendAll(msg);
+    public void send(String usr,String msg) throws RemoteException {
+        Message message = new Message(usr, msg);
+        System.out.println(msg);
+        listMessages.add(message);
+        //sendAll(message);
         //return msg;
     }
 
