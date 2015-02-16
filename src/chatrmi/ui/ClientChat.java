@@ -6,6 +6,8 @@
 
 package chatrmi.ui;
 
+import chatrmi.impl.ClientRMI;
+
 /**
  *
  *  @author Mary Carmen Ríos Ramírez
@@ -14,13 +16,19 @@ package chatrmi.ui;
  *  @since 2015
  * 
  */
-public class ClientChat extends javax.swing.JFrame {
+public class ClientChat extends javax.swing.JFrame implements Runnable {
 
     /**
      * Creates new form Chat
      */
     public ClientChat() {
         initComponents();
+        try {
+        clientRMI = new ClientRMI();
+       }
+       catch(Exception e){
+               System.out.println("ERROR: Iniciar clase ClienteRMI");
+       }
     }
 
     /**
@@ -193,6 +201,14 @@ public class ClientChat extends javax.swing.JFrame {
         this.lbl_User = label;
     }
     
+    static void threadMessage(String message) {
+        String threadName =
+            Thread.currentThread().getName();
+        System.out.format("%s: %s%n",
+                          threadName,
+                          message);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -248,4 +264,23 @@ public class ClientChat extends javax.swing.JFrame {
     private javax.swing.JTextPane tpn_Messages;
     private javax.swing.JTextArea txtCurrentMsg;
     // End of variables declaration//GEN-END:variables
+    Thread t;
+    ClientRMI clientRMI;
+    
+    
+    @Override
+    public void run() {
+        
+        try {
+            while (true){
+                
+                Thread.sleep(4000);
+                
+                // Print a message
+                threadMessage("");
+            }
+        } catch (InterruptedException e) {
+            threadMessage("I wasn't done!");
+        }
+    }
 }
