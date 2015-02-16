@@ -31,7 +31,7 @@ public class ServerRMI {
         
         Registry registry = LocateRegistry.createRegistry(Constants.RMI_PORT);
         registry.bind(Constants.RMI_ID, impl);
-        System.out.println("Server is started");
+        //System.out.println("Server is started");
         JOptionPane.showMessageDialog(null, "Server is started", "InfoBox: " + "Server", JOptionPane.INFORMATION_MESSAGE); 
     }
 }
