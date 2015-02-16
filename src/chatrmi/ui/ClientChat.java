@@ -289,10 +289,10 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     
     @Override
     public void run() {
-        List <Message> listMessages = new ArrayList<Message>();
+        List <Message> listMessages;// = new ArrayList<Message>();
         try {
             String messageTemp="";
-            //while (true){
+            while (true){
                 listMessages = clientRMI.getMesssages();
                 
                 for (Message message : listMessages) {
@@ -307,7 +307,7 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
                 // Print a message
                 threadMessage("Lista de mensajes insertada");
                 
-            //}
+            }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");
             
