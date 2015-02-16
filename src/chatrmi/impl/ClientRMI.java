@@ -29,7 +29,6 @@ public class ClientRMI {
     public ClientRMI() throws RemoteException, NotBoundException, Exception{
         registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
-        
     }
     
     public String isLoginValid(String user) throws Exception{
