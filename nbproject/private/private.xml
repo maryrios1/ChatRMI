@@ -4,12 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/impl/ClientRMI.java</file>
-            <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/remote/InterfaceChat.java</file>
+            <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/impl/ServerRMI.java</file>
             <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/ChatRMI.java</file>
+            <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/remote/InterfaceChat.java</file>
             <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/ui/ClientChat.java</file>
-            <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/remote/Constants.java</file>
             <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/remote/Message.java</file>
-            <file>file:/C:/Users/lheredia/Documents/NetBeansProjects/ChatRMI/ChatRMI/src/chatrmi/impl/RemoteImpl.java</file>
         </group>
     </open-files>
 </project-private>
