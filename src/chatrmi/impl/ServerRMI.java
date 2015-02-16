@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package chatrmi.impl;
-
+import java.rmi.server.UnicastRemoteObject;
 /**
  *
  *  @author Mary Carmen Ríos Ramírez
@@ -13,6 +13,7 @@ package chatrmi.impl;
  *  @since 2015
  * 
  */
-public class ServerRMI  {
+public class ServerRMI {
     // TODO a real bad ass server
+    
 }
