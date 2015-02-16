@@ -4,24 +4,34 @@
  * and open the template in the editor.
  */
 package chatrmi.impl;
+import chatrmi.remote.InterfaceChat;
+import chatrmi.remote.Message;
+import chatrmi.remote.User;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import chatrmi.remote.InterfaceChat;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author lheredia
  */
 public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     String username;
+    //List <User> listUser = new ArrayList<User>();
+    List <String> listUser = new ArrayList<String>();
+    List <Message> listMessages = new ArrayList<Message>();
     public RemoteImpl() throws RemoteException{
         super();
     }
-    public boolean isLoginValid(String username) throws RemoteException{
-        //if (username.equals("test")){
-        this.username = username;
-            return true;
-        //}
-        //return false;
+    public String isLoginValid(String username) throws RemoteException{
+        username =  username.toLowerCase();
+        if(!listUser.contains(username)){
+            listUser.add(username);
+            this.username = username;
+            return "OK";
+        }
+        else
+            return "Usuario ya registrado";
     }
 
     @Override
@@ -29,7 +39,6 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
         return this.username;
     }
 
-    @Override
     public void setUsername() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -45,14 +54,36 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public void send(String msg) throws RemoteException {
-        System.out.println(msg);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void send(Message msg) throws RemoteException {
+        System.out.println(msg.getMessage());
+        listMessages.add(msg);
+        sendAll(msg);
+        //return msg;
     }
 
     @Override
     public String receive() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void getStatus(String msg) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUsername(String oldName, String newName) throws Exception {
+        
+    }
+
+    @Override
+    public void sendAll(Message msg) throws RemoteException {
+        
+    }
+
+    @Override
+    public List<Message> getMessage() throws RemoteException {
+        return listMessages;
     }
     
 }

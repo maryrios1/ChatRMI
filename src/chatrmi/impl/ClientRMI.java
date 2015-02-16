@@ -7,10 +7,12 @@ package chatrmi.impl;
 
 import chatrmi.remote.Constants;
 import chatrmi.remote.InterfaceChat;
+import chatrmi.remote.Message;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 /**
  *
@@ -27,12 +29,14 @@ public class ClientRMI {
     public ClientRMI() throws RemoteException, NotBoundException, Exception{
         registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
-        System.out.println();
-        System.out.println(remote.isLoginValid("test"));
-        //remote.send();
+        
     }
     
-    public boolean isLoginValid(String user) throws Exception{
+    public String isLoginValid(String user) throws Exception{
         return remote.isLoginValid(user);
+    }
+    
+    public List<Message> getMesssages() throws Exception{
+        return remote.getMessage();
     }
 }

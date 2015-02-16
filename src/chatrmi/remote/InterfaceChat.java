@@ -6,17 +6,21 @@
 package chatrmi.remote;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  *
  * @author lheredia
  */
 public interface InterfaceChat  extends Remote{
-    public boolean isLoginValid(String username) throws Exception;
+    public String isLoginValid(String username) throws Exception;
     public String getUsername() throws Exception;
-    public void setUsername() throws Exception;
-    public void send(String msg) throws RemoteException;
+    public void setUsername(String oldName,String newName) throws Exception;
+    public void send(Message msg) throws RemoteException;
     public String receive() throws RemoteException;
     public InterfaceChat getClient() throws RemoteException;
     public void setClient(InterfaceChat c)throws RemoteException;
+    public void getStatus(String msg)throws RemoteException;
+    public void sendAll(Message msg)throws RemoteException;
+    public List<Message> getMessage()throws RemoteException;
 }

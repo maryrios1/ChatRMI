@@ -4,6 +4,7 @@ import chatrmi.impl.ClientRMI;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -85,8 +86,8 @@ public class LoginChat extends javax.swing.JFrame {
         //System.out.println(remote.isLoginValid("ak"));
         //System.out.println(remote.isLoginValid("test"));
         //remote.send();
-        
-            if(clientRMI.isLoginValid(txt_User.getText()))
+        String msg= clientRMI.isLoginValid(txt_User.getText());
+            if( msg.equals("OK"))
             {
                 ClientChat wd = new ClientChat();
                 JLabel lbl =  wd.getLabel();
@@ -94,6 +95,8 @@ public class LoginChat extends javax.swing.JFrame {
                 wd.setVisible(true);
                 this.dispose();//to close the current jfram
             }
+            else
+                JOptionPane.showMessageDialog(rootPane, msg);
         
         }catch(Exception e){
             System.out.println("ERROR: " + e.getMessage());
