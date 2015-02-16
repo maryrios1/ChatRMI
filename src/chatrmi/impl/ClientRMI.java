@@ -5,6 +5,13 @@
  */
 package chatrmi.impl;
 
+import chatrmi.remote.Constants;
+import chatrmi.remote.InterfaceChat;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 /**
  *
  *  @author Mary Carmen Ríos Ramírez
@@ -14,5 +21,18 @@ package chatrmi.impl;
  * 
  */
 public class ClientRMI {
+    static Registry registry;// = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
+    static InterfaceChat remote;// = (InterfaceChat) registry.lookup(Constants.RMI_ID);
     
+    public ClientRMI() throws RemoteException, NotBoundException, Exception{
+        registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
+        remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
+        System.out.println();
+        System.out.println(remote.isLoginValid("test"));
+        //remote.send();
+    }
+    
+    public boolean isLoginValid(String user) throws Exception{
+        return remote.isLoginValid(user);
+    }
 }

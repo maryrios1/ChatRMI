@@ -6,25 +6,27 @@
 package chatrmi.impl;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import chatrmi.remote.InterfServer;
+import chatrmi.remote.InterfaceChat;
 /**
  *
  * @author lheredia
  */
-public class RemoteImpl extends UnicastRemoteObject implements InterfServer {
+public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
+    String username;
     public RemoteImpl() throws RemoteException{
         super();
     }
     public boolean isLoginValid(String username) throws RemoteException{
-        if (username.equals("test")){
+        //if (username.equals("test")){
+        this.username = username;
             return true;
-        }
-        return false;
+        //}
+        //return false;
     }
 
     @Override
     public String getUsername() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.username;
     }
 
     @Override
@@ -33,12 +35,23 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfServer {
     }
 
     @Override
-    public void send(String msg) throws RemoteException {
+    public InterfaceChat getClient() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean login(String username) throws Exception {
+    public void setClient(InterfaceChat c) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void send(String msg) throws RemoteException {
+        System.out.println(msg);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String receive() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
