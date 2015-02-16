@@ -44,16 +44,6 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public InterfaceChat getClient() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setClient(InterfaceChat c) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void send(Message msg) throws RemoteException {
         System.out.println(msg.getMessage());
         listMessages.add(msg);
@@ -67,16 +57,6 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public void getStatus(String msg) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setUsername(String oldName, String newName) throws Exception {
-        
-    }
-
-    @Override
     public void sendAll(Message msg) throws RemoteException {
         
     }
@@ -84,6 +64,16 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     @Override
     public List<Message> getMessage() throws RemoteException {
         return listMessages;
+    }
+
+    @Override
+    public void setUsername(String oldName, String newName) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void getStatus(String msg) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

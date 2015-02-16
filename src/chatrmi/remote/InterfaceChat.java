@@ -18,8 +18,6 @@ public interface InterfaceChat  extends Remote{
     public void setUsername(String oldName,String newName) throws Exception;
     public void send(Message msg) throws RemoteException;
     public String receive() throws RemoteException;
-    public InterfaceChat getClient() throws RemoteException;
-    public void setClient(InterfaceChat c)throws RemoteException;
     public void getStatus(String msg)throws RemoteException;
     public void sendAll(Message msg)throws RemoteException;
     public List<Message> getMessage()throws RemoteException;

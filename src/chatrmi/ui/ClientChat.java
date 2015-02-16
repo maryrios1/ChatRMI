@@ -7,6 +7,16 @@
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
+import chatrmi.remote.Message;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -24,11 +34,11 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     public ClientChat() {
         initComponents();
         try {
-        clientRMI = new ClientRMI();
-       }
-       catch(Exception e){
-               System.out.println("ERROR: Iniciar clase ClienteRMI");
-       }
+            clientRMI = new ClientRMI();
+        }
+        catch(Exception e){
+            System.out.println("ERROR: Iniciar clase ClienteRMI");
+        }
     }
 
     /**
@@ -191,6 +201,12 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
 
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
         // TODO add your handling code here:
+        Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
+        try {
+            clientRMI.sendMessage(msg);
+        } catch (RemoteException ex) {
+            Logger.getLogger("ERROR_SENT_MESSAGE: " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btn_SendActionPerformed
 
     public javax.swing.JLabel getLabel() {
@@ -270,17 +286,51 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     
     @Override
     public void run() {
-        
+        List <Message> listMessages = new ArrayList<Message>();
         try {
+            String messageTemp="";
             while (true){
+                listMessages = clientRMI.getMesssages();
                 
-                Thread.sleep(4000);
+                for (Message message : listMessages) {
+                    StyledDocument doc = tpn_Messages.getStyledDocument();
+                    addStylesToDocument(doc);            
+                    messageTemp = message.getUser() + ": " + message.getMessage();
+                    doc.insertString(doc.getLength(),messageTemp + "\n",null);
+                }
+                
+                Thread.sleep(1000);
                 
                 // Print a message
-                threadMessage("");
+                threadMessage("Lista de mensajes insertada");
+                
             }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");
+            
+        } catch (Exception ex) {
+            Logger.getLogger("Error: list msgs, " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    protected void addStylesToDocument(StyledDocument doc) {
+        //Initialize some styles.
+        Style def = StyleContext.getDefaultStyleContext().
+                        getStyle(StyleContext.DEFAULT_STYLE);
+ 
+        Style regular = doc.addStyle("regular", def);
+        StyleConstants.setFontFamily(def, "SansSerif");
+ 
+        Style s = doc.addStyle("italic", regular);
+        StyleConstants.setItalic(s, true);
+ 
+        s = doc.addStyle("bold", regular);
+        StyleConstants.setBold(s, true);
+ 
+        s = doc.addStyle("small", regular);
+        StyleConstants.setFontSize(s, 10);
+ 
+        s = doc.addStyle("large", regular);
+        StyleConstants.setFontSize(s, 16);
     }
 }

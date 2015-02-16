@@ -6,7 +6,12 @@
 
 package chatrmi;
 
+import chatrmi.impl.*;
 import chatrmi.ui.LoginChat;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +27,19 @@ public class ChatRMI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        LoginChat x =  new LoginChat();
-        x.show();
+        if(args[0].equals("server")){
+            try {
+                ServerRMI s = new ServerRMI();
+                s.init();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AlreadyBoundException ex) {
+                Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }if(args[1].equals("cliente")){
+            LoginChat x =  new LoginChat();
+            x.show();
+        }
         // TODO code application logic here
     }
     
