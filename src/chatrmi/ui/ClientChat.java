@@ -46,7 +46,7 @@ import javax.swing.text.StyledDocument;
                         while(true){
                             listUsers = clientRMI.getUsers();
                             if(listUsers != null && listUsers.size()>0){
-                                jTextPane1.setText(listUsers.toString());
+                                tpn_ListUsers.setText(listUsers.toString());
                             /*
                               StyledDocument doc = jTextPane1.getStyledDocument();
                               addStylesToDocument(doc);    
@@ -88,7 +88,7 @@ import javax.swing.text.StyledDocument;
         lbl_Message = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        tpn_ListUsers = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tpn_Messages = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -123,9 +123,9 @@ import javax.swing.text.StyledDocument;
         jSplitPane1.setDividerLocation(320);
         jSplitPane1.setDividerSize(10);
 
-        jTextPane1.setEditable(false);
-        jTextPane1.setMaximumSize(new java.awt.Dimension(100, 1000));
-        jScrollPane1.setViewportView(jTextPane1);
+        tpn_ListUsers.setEditable(false);
+        tpn_ListUsers.setMaximumSize(new java.awt.Dimension(100, 1000));
+        jScrollPane1.setViewportView(tpn_ListUsers);
 
         jSplitPane1.setRightComponent(jScrollPane1);
 
@@ -311,11 +311,11 @@ import javax.swing.text.StyledDocument;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lbl_Message;
     private javax.swing.JLabel lbl_User;
     private javax.swing.JMenuItem mit_CloseSession;
     private javax.swing.JMenuItem mit_Exit;
+    private javax.swing.JTextPane tpn_ListUsers;
     private javax.swing.JTextPane tpn_Messages;
     private javax.swing.JTextArea txtCurrentMsg;
     // End of variables declaration//GEN-END:variables
@@ -343,9 +343,9 @@ import javax.swing.text.StyledDocument;
                   doc.insertString(doc.getLength(),message.getUser() + ": " + 
                            message.getMessage() + "\n",null);
                }
-                threadMessage("Lista de mensajes insertada");
+                //threadMessage("Lista de mensajes insertada");
                 } 
-                 Thread.sleep(10000);
+                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");
