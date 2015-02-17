@@ -7,14 +7,8 @@
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
-import chatrmi.remote.Constants;
 import chatrmi.remote.Message;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,10 +34,6 @@ import javax.swing.text.StyledDocument;
         initComponents();
         try {
             this.clientRMI = new ClientRMI();
-             // Registry registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
-             // clientRMI = (ClientRMI) registry.lookup(Constants.RMI_ID);
-       // registry.bind(Constants.RMI_ID, impl);
-            
           
             t=new Thread(this,"HiloMensajes");
             t.start();
@@ -214,8 +204,8 @@ import javax.swing.text.StyledDocument;
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
         // TODO add your handling code here:
         try {
-            //Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
-            clientRMI.sendMessage(lbl_User.getText(),txtCurrentMsg.getText());
+            Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
+            clientRMI.sendMessage(msg);
             txtCurrentMsg.setText("");
         } catch (RemoteException ex) {
             Logger.getLogger("ERROR_SENT_MESSAGE: " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
@@ -301,7 +291,6 @@ import javax.swing.text.StyledDocument;
     public void run() {
         List <Message> listMessages;// = new ArrayList<Message>();
         try {
-            Message messageTemp;
            
             while (true){
                
@@ -312,9 +301,8 @@ import javax.swing.text.StyledDocument;
                   StyledDocument doc = tpn_Messages.getStyledDocument();
                   addStylesToDocument(doc);    
                   System.out.println("wiii" + message.getMessage());
-                 
-
-                   doc.insertString(doc.getLength(),message.getMessage() + "\n",null);
+                   doc.insertString(doc.getLength(),message.getUser() + ": " + 
+                           message.getMessage() + "\n",null);
                }
                 threadMessage("Lista de mensajes insertada");
                 } 

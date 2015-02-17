@@ -40,7 +40,7 @@ public class ClientRMI {
         return listMessage;
     }
     
-    public void sendMessage(String usr,String msg) throws RemoteException{
-        remote.send(usr,msg);
+    public void sendMessage(Message msg) throws RemoteException{
+        remote.send(msg);
     }
 }

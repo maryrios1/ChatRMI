@@ -44,10 +44,10 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public void send(String usr,String msg) throws RemoteException {
-        Message message = new Message(usr, msg);           
-        System.out.println(msg);
-        listMessages.add(message);
+    public void send(Message  msg) throws RemoteException {
+                  
+        System.out.println(msg.getUser() + ": " + msg.getMessage());
+        listMessages.add(msg);
         //sendAll(message);
         //return msg;
     }
