@@ -15,12 +15,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author mary
  */
-public class Message implements Serializable{
+public class Message implements Serializable,Runnable{
     String UserName;
     String Message;
     Date TimeSend;
     
-    public Message(String usr, String msg ) throws RemoteException{
+    public Message(String usr, String msg ){
         this.UserName = usr;
         this.Message = msg;
         this.TimeSend = new Date();
@@ -60,5 +60,10 @@ public class Message implements Serializable{
         Date date2 =  new Date();
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

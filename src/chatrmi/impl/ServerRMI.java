@@ -5,11 +5,14 @@
  */
 package chatrmi.impl;
 
+import chatrmi.ChatRMI;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import chatrmi.remote.Constants;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,10 +25,15 @@ import javax.swing.JOptionPane;
  */
 public class ServerRMI {
     // TODO a real bad ass server
-    //public static void main(String[] args) {
-     //   
+    public static void main(String[] args) {
+        try {
+            ServerRMI s = new ServerRMI();
+            s.init();
+        } catch (RemoteException | AlreadyBoundException ex) {
+            Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
+        } 
        
-   // }
+    }
     public void init()throws RemoteException, AlreadyBoundException{
         RemoteImpl impl = new RemoteImpl();
         

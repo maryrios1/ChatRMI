@@ -27,11 +27,19 @@ import javax.swing.text.StyledDocument;
  * 
  */
     public class ClientChat extends javax.swing.JFrame implements Runnable {
-
+    public String formatList(List<String> list){
+        String listofUsers="";
+        for(String user: list){
+            listofUsers+=user+"\n";
+        }
+        return listofUsers;
+    }
     /**
      * Creates new form Chat
      */
-    public ClientChat() {
+    public ClientChat(){this("default");}
+    public ClientChat(String user) {
+        userName=user;
         initComponents();
         try {
             this.clientRMI = new ClientRMI();
@@ -39,26 +47,30 @@ import javax.swing.text.StyledDocument;
             tMessages=new Thread(this,"HiloMensajes");
             tMessages.start();
             
-            tUsers=new Thread(new Runnable() {
-                public void run() {
-                    List<String> listUsers = new ArrayList<>();
-                    try {
-                        while(true){
-                            listUsers = clientRMI.getUsers();
-                            if(listUsers != null && listUsers.size()>0){
-                                tpn_ListUsers.setText(listUsers.toString());
+            tUsers=new Thread(() -> {
+                List<String> listUsers = new ArrayList<>();
+                Message userjoined=new Message(userName,"se ha unido a la platica   <<<");
+                try {
+                    clientRMI.sendMessage(userjoined);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    while(true){
+                        listUsers = clientRMI.getUsers();
+                        if(listUsers != null && listUsers.size()>0){
+                            tpn_ListUsers.setText(formatList(listUsers));
                             /*
-                              StyledDocument doc = jTextPane1.getStyledDocument();
-                              addStylesToDocument(doc);    
-                              doc.insertString(doc.getLength(),message.getUser() + ": " + 
-                                       message.getMessage() + "\n",null);
+                            StyledDocument doc = jTextPane1.getStyledDocument();
+                            addStylesToDocument(doc);
+                            doc.insertString(doc.getLength(),message.getUser() + ": " +
+                            message.getMessage() + "\n",null);
                             */
-                            }
-                            Thread.sleep(10000);
                         }
-                    } catch (Exception ex) {
-                            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+                        Thread.sleep(10000);
                     }
+                } catch (Exception ex) {
+                    Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }); 
             tUsers.start();
@@ -100,6 +112,14 @@ import javax.swing.text.StyledDocument;
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         txtCurrentMsg.setColumns(20);
         txtCurrentMsg.setRows(5);
@@ -216,25 +236,17 @@ import javax.swing.text.StyledDocument;
     private void mit_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mit_ExitActionPerformed
         // TODO add your handling code here:
         //cerrar sesion
-        try {
-            clientRMI.logOut(lbl_User.getText());
-        } catch (Exception ex) {
-            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.dispose();
+        closeSession();
+        System.exit(0);
+        
     }//GEN-LAST:event_mit_ExitActionPerformed
 
     private void mit_CloseSessionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mit_CloseSessionActionPerformed
         // TODO add your handling code here:
         //cerrar sesion
-        LoginChat login =  new LoginChat();
+        closeSession();
+        LoginChat login=new LoginChat();
         login.setVisible(true);
-        try {
-            clientRMI.logOut(lbl_User.getText());
-        } catch (Exception ex) {
-            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.dispose();
     }//GEN-LAST:event_mit_CloseSessionActionPerformed
 
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
@@ -247,6 +259,29 @@ import javax.swing.text.StyledDocument;
             Logger.getLogger("ERROR_SENT_MESSAGE: " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_SendActionPerformed
+    public void closeSession(){
+        try {
+            clientRMI.logOut(lbl_User.getText());
+            Message userleaved=new Message(userName, "se ha retirado a la platica   <<<");
+                try {
+                    clientRMI.sendMessage(userleaved);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        } catch (Exception ex) {
+            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        closeSession();
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        closeSession();
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosed
 
     public javax.swing.JLabel getLabel() {
         return lbl_User;
@@ -292,10 +327,8 @@ import javax.swing.text.StyledDocument;
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ClientChat().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ClientChat().setVisible(true);
         });
     }
 
@@ -323,7 +356,7 @@ import javax.swing.text.StyledDocument;
     Thread tUsers;
     Thread tSendMessage;
     ClientRMI clientRMI;
-    
+    private final String  userName;
     
     @Override
     public void run() {

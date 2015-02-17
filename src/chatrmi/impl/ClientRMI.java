@@ -23,11 +23,12 @@ import java.util.List;
  * 
  */
 public class ClientRMI {
+    final String HOST="localhost";
     static Registry registry;// = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
     static InterfaceChat remote;// = (InterfaceChat) registry.lookup(Constants.RMI_ID);
     
     public ClientRMI() throws RemoteException, NotBoundException, Exception{
-        registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
+        registry = LocateRegistry.getRegistry(HOST, Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
     }
     

@@ -31,9 +31,7 @@ public class ChatRMI {
             try {
                 ServerRMI s = new ServerRMI();
                 s.init();
-            } catch (RemoteException ex) {
-                Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (AlreadyBoundException ex) {
+            } catch (RemoteException | AlreadyBoundException ex) {
                 Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }if(args[1].equals("cliente")){

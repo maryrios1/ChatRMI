@@ -18,11 +18,12 @@ import java.util.List;
 public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     String username;
     //List <User> listUser = new ArrayList<User>();
-    List <String> listUser = new ArrayList<String>();
-    List <Message> listMessages = new ArrayList<Message>();
+    List <String> listUser = new ArrayList<>();
+    List <Message> listMessages = new ArrayList<>();
     public RemoteImpl() throws RemoteException{
         super();
     }
+    @Override
     public String isLoginValid(String username) throws RemoteException{
         username =  username.toLowerCase();
         if(!listUser.contains(username)){

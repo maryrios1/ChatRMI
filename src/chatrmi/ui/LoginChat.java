@@ -1,8 +1,6 @@
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -86,10 +84,11 @@ public class LoginChat extends javax.swing.JFrame {
         //System.out.println(remote.isLoginValid("ak"));
         //System.out.println(remote.isLoginValid("test"));
         //remote.send();
-        String msg= clientRMI.isLoginValid(txt_User.getText());
+        String user=txt_User.getText();
+        String msg= clientRMI.isLoginValid(user);
             if( msg.equals("OK"))
             {
-                ClientChat wd = new ClientChat();
+                ClientChat wd = new ClientChat(user);
                 JLabel lbl =  wd.getLabel();
                 lbl.setText(txt_User.getText());
                 wd.setVisible(true);
@@ -132,10 +131,8 @@ public class LoginChat extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginChat().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginChat().setVisible(true);
         });
     }
 
