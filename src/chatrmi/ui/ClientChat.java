@@ -26,7 +26,7 @@ import javax.swing.text.StyledDocument;
  *  @since 2015
  * 
  */
-public class ClientChat extends javax.swing.JFrame implements Runnable {
+    public class ClientChat extends javax.swing.JFrame implements Runnable {
 
     /**
      * Creates new form Chat
@@ -34,9 +34,35 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     public ClientChat() {
         initComponents();
         try {
-            clientRMI = new ClientRMI();
-            t=new Thread(this,"HiloMensajes");
-            t.start();
+            this.clientRMI = new ClientRMI();
+          
+            tMessages=new Thread(this,"HiloMensajes");
+            tMessages.start();
+            
+            tUsers=new Thread(new Runnable() {
+                public void run() {
+                    List<String> listUsers = new ArrayList<>();
+                    try {
+                        while(true){
+                            listUsers = clientRMI.getUsers();
+                            if(listUsers != null && listUsers.size()>0){
+                                tpn_ListUsers.setText(listUsers.toString());
+                            /*
+                              StyledDocument doc = jTextPane1.getStyledDocument();
+                              addStylesToDocument(doc);    
+                              doc.insertString(doc.getLength(),message.getUser() + ": " + 
+                                       message.getMessage() + "\n",null);
+                            */
+                            }
+                            Thread.sleep(10000);
+                        }
+                    } catch (Exception ex) {
+                            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }); 
+            tUsers.start();
+            
         }
         catch(Exception e){
             System.out.println("ERROR: Iniciar clase ClienteRMI");
@@ -62,7 +88,7 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         lbl_Message = new javax.swing.JLabel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        tpn_ListUsers = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tpn_Messages = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -97,9 +123,9 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         jSplitPane1.setDividerLocation(320);
         jSplitPane1.setDividerSize(10);
 
-        jTextPane1.setEditable(false);
-        jTextPane1.setMaximumSize(new java.awt.Dimension(100, 1000));
-        jScrollPane1.setViewportView(jTextPane1);
+        tpn_ListUsers.setEditable(false);
+        tpn_ListUsers.setMaximumSize(new java.awt.Dimension(100, 1000));
+        jScrollPane1.setViewportView(tpn_ListUsers);
 
         jSplitPane1.setRightComponent(jScrollPane1);
 
@@ -190,6 +216,11 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     private void mit_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mit_ExitActionPerformed
         // TODO add your handling code here:
         //cerrar sesion
+        try {
+            clientRMI.logOut(lbl_User.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_mit_ExitActionPerformed
 
@@ -197,15 +228,20 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         // TODO add your handling code here:
         //cerrar sesion
         LoginChat login =  new LoginChat();
-        login.show();
+        login.setVisible(true);
+        try {
+            clientRMI.logOut(lbl_User.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_mit_CloseSessionActionPerformed
 
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
         // TODO add your handling code here:
         try {
-            //Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
-            clientRMI.sendMessage(lbl_User.getText(),txtCurrentMsg.getText());
+            Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
+            clientRMI.sendMessage(msg);
             txtCurrentMsg.setText("");
         } catch (RemoteException ex) {
             Logger.getLogger("ERROR_SENT_MESSAGE: " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,8 +292,10 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new ClientChat().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ClientChat().setVisible(true);
+            }
         });
     }
 
@@ -273,15 +311,17 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lbl_Message;
     private javax.swing.JLabel lbl_User;
     private javax.swing.JMenuItem mit_CloseSession;
     private javax.swing.JMenuItem mit_Exit;
+    private javax.swing.JTextPane tpn_ListUsers;
     private javax.swing.JTextPane tpn_Messages;
     private javax.swing.JTextArea txtCurrentMsg;
     // End of variables declaration//GEN-END:variables
-    Thread t;
+    Thread tMessages;
+    Thread tUsers;
+    Thread tSendMessage;
     ClientRMI clientRMI;
     
     
@@ -289,22 +329,23 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     public void run() {
         List <Message> listMessages;// = new ArrayList<Message>();
         try {
-            String messageTemp="";
+           
             while (true){
-                listMessages = clientRMI.getMesssages();
-                
+                //Test, obtiene TODOS los mensajes de la lista de mensajes y 
+                //los pone en el pane
+              tpn_Messages.setText("");
+              listMessages = clientRMI.getMesssages();
+                if(listMessages != null && listMessages.size()>0){
+               
                 for (Message message : listMessages) {
-                    StyledDocument doc = tpn_Messages.getStyledDocument();
-                    addStylesToDocument(doc);            
-                    messageTemp = message.getUser() + ": " + message.getMessage();
-                    doc.insertString(doc.getLength(),messageTemp + "\n",null);
-                }
-                
-                Thread.sleep(1000);
-                
-                // Print a message
-                threadMessage("Lista de mensajes insertada");
-                
+                  StyledDocument doc = tpn_Messages.getStyledDocument();
+                  addStylesToDocument(doc);    
+                  doc.insertString(doc.getLength(),message.getUser() + ": " + 
+                           message.getMessage() + "\n",null);
+               }
+                //threadMessage("Lista de mensajes insertada");
+                } 
+                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");

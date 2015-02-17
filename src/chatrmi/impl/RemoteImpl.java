@@ -6,6 +6,7 @@
 package chatrmi.impl;
 import chatrmi.remote.InterfaceChat;
 import chatrmi.remote.Message;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -43,10 +44,10 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public void send(String usr,String msg) throws RemoteException {
-        Message message = new Message(usr, msg);
-        System.out.println(msg);
-        listMessages.add(message);
+    public void send(Message  msg) throws RemoteException {
+                  
+        System.out.println(msg.getUser() + ": " + msg.getMessage());
+        listMessages.add(msg);
         //sendAll(message);
         //return msg;
     }
@@ -74,6 +75,16 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     @Override
     public void getStatus(String msg) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<String> getUsers() throws RemoteException {
+        return this.listUser;
+    }
+
+    @Override
+    public void logOut(String username) throws Exception {
+        listUser.remove(username);
     }
     
 }

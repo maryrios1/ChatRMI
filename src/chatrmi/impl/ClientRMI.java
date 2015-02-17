@@ -29,7 +29,6 @@ public class ClientRMI {
     public ClientRMI() throws RemoteException, NotBoundException, Exception{
         registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
-        
     }
     
     public String isLoginValid(String user) throws Exception{
@@ -37,10 +36,19 @@ public class ClientRMI {
     }
     
     public List<Message> getMesssages() throws Exception{
-        return remote.getMessage();
+        List<Message> listMessage = remote.getMessage();
+        return listMessage;
     }
     
-    public void sendMessage(String usr,String msg) throws RemoteException{
-        remote.send(usr,msg);
+    public void sendMessage(Message msg) throws RemoteException{
+        remote.send(msg);
+    }
+    
+    public void logOut(String user) throws RemoteException, Exception{
+        remote.logOut(user);
+    }
+    
+    public List<String> getUsers() throws RemoteException, Exception{
+        return remote.getUsers();
     }
 }
