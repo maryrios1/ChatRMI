@@ -7,8 +7,13 @@
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
+import chatrmi.remote.Constants;
 import chatrmi.remote.Message;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,7 +31,7 @@ import javax.swing.text.StyledDocument;
  *  @since 2015
  * 
  */
-public class ClientChat extends javax.swing.JFrame implements Runnable {
+    public class ClientChat extends javax.swing.JFrame implements Runnable {
 
     /**
      * Creates new form Chat
@@ -34,7 +39,12 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     public ClientChat() {
         initComponents();
         try {
-            clientRMI = new ClientRMI();
+            this.clientRMI = new ClientRMI();
+             // Registry registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
+             // clientRMI = (ClientRMI) registry.lookup(Constants.RMI_ID);
+       // registry.bind(Constants.RMI_ID, impl);
+            
+          
             t=new Thread(this,"HiloMensajes");
             t.start();
         }
@@ -197,7 +207,7 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
         // TODO add your handling code here:
         //cerrar sesion
         LoginChat login =  new LoginChat();
-        login.show();
+        login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_mit_CloseSessionActionPerformed
 
@@ -291,22 +301,24 @@ public class ClientChat extends javax.swing.JFrame implements Runnable {
     public void run() {
         List <Message> listMessages;// = new ArrayList<Message>();
         try {
-            String messageTemp="";
+            Message messageTemp;
+           
             while (true){
-                listMessages = clientRMI.getMesssages();
-                
+               
+              listMessages = clientRMI.getMesssages();
+                if(listMessages != null && listMessages.size()>0){
+               
                 for (Message message : listMessages) {
-                    StyledDocument doc = tpn_Messages.getStyledDocument();
-                    addStylesToDocument(doc);            
-                    messageTemp = message.getUser() + ": " + message.getMessage();
-                    doc.insertString(doc.getLength(),messageTemp + "\n",null);
-                }
-                
-                Thread.sleep(1000);
-                
-                // Print a message
+                  StyledDocument doc = tpn_Messages.getStyledDocument();
+                  addStylesToDocument(doc);    
+                  System.out.println("wiii" + message.getMessage());
+                 
+
+                   doc.insertString(doc.getLength(),message.getMessage() + "\n",null);
+               }
                 threadMessage("Lista de mensajes insertada");
-                
+                } 
+                 Thread.sleep(10000);
             }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");

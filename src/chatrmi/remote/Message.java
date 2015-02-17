@@ -6,6 +6,7 @@
 
 package chatrmi.remote;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author mary
  */
-public class Message extends UnicastRemoteObject {
+public class Message implements Serializable{
     String UserName;
     String Message;
     Date TimeSend;
