@@ -6,11 +6,13 @@
 
 package chatrmi.remote;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mary
  */
-public class User {
+public class User implements Serializable{
     String usr;
     
     public User(String usr){
