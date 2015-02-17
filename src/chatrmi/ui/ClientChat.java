@@ -9,6 +9,7 @@ package chatrmi.ui;
 import chatrmi.impl.ClientRMI;
 import chatrmi.remote.Message;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,8 +36,33 @@ import javax.swing.text.StyledDocument;
         try {
             this.clientRMI = new ClientRMI();
           
-            t=new Thread(this,"HiloMensajes");
-            t.start();
+            tMessages=new Thread(this,"HiloMensajes");
+            tMessages.start();
+            
+            tUsers=new Thread(new Runnable() {
+                public void run() {
+                    List<String> listUsers = new ArrayList<>();
+                    try {
+                        while(true){
+                            listUsers = clientRMI.getUsers();
+                            if(listUsers != null && listUsers.size()>0){
+                                jTextPane1.setText(listUsers.toString());
+                            /*
+                              StyledDocument doc = jTextPane1.getStyledDocument();
+                              addStylesToDocument(doc);    
+                              doc.insertString(doc.getLength(),message.getUser() + ": " + 
+                                       message.getMessage() + "\n",null);
+                            */
+                            }
+                            Thread.sleep(10000);
+                        }
+                    } catch (Exception ex) {
+                            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }); 
+            tUsers.start();
+            
         }
         catch(Exception e){
             System.out.println("ERROR: Iniciar clase ClienteRMI");
@@ -190,6 +216,11 @@ import javax.swing.text.StyledDocument;
     private void mit_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mit_ExitActionPerformed
         // TODO add your handling code here:
         //cerrar sesion
+        try {
+            clientRMI.logOut(lbl_User.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_mit_ExitActionPerformed
 
@@ -198,6 +229,11 @@ import javax.swing.text.StyledDocument;
         //cerrar sesion
         LoginChat login =  new LoginChat();
         login.setVisible(true);
+        try {
+            clientRMI.logOut(lbl_User.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_mit_CloseSessionActionPerformed
 
@@ -283,7 +319,9 @@ import javax.swing.text.StyledDocument;
     private javax.swing.JTextPane tpn_Messages;
     private javax.swing.JTextArea txtCurrentMsg;
     // End of variables declaration//GEN-END:variables
-    Thread t;
+    Thread tMessages;
+    Thread tUsers;
+    Thread tSendMessage;
     ClientRMI clientRMI;
     
     
@@ -293,15 +331,16 @@ import javax.swing.text.StyledDocument;
         try {
            
             while (true){
-               
+                //Test, obtiene TODOS los mensajes de la lista de mensajes y 
+                //los pone en el pane
+              tpn_Messages.setText("");
               listMessages = clientRMI.getMesssages();
                 if(listMessages != null && listMessages.size()>0){
                
                 for (Message message : listMessages) {
                   StyledDocument doc = tpn_Messages.getStyledDocument();
                   addStylesToDocument(doc);    
-                  System.out.println("wiii" + message.getMessage());
-                   doc.insertString(doc.getLength(),message.getUser() + ": " + 
+                  doc.insertString(doc.getLength(),message.getUser() + ": " + 
                            message.getMessage() + "\n",null);
                }
                 threadMessage("Lista de mensajes insertada");

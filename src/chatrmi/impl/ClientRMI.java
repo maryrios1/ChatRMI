@@ -43,4 +43,12 @@ public class ClientRMI {
     public void sendMessage(Message msg) throws RemoteException{
         remote.send(msg);
     }
+    
+    public void logOut(String user) throws RemoteException, Exception{
+        remote.logOut(user);
+    }
+    
+    public List<String> getUsers() throws RemoteException, Exception{
+        return remote.getUsers();
+    }
 }

@@ -76,5 +76,15 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     public void getStatus(String msg) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<String> getUsers() throws RemoteException {
+        return this.listUser;
+    }
+
+    @Override
+    public void logOut(String username) throws Exception {
+        listUser.remove(username);
+    }
     
 }
