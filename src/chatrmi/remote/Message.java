@@ -7,7 +7,6 @@
 package chatrmi.remote;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -16,9 +15,9 @@ import java.util.concurrent.TimeUnit;
  * @author mary
  */
 public class Message implements Serializable,Runnable{
-    String UserName;
-    String Message;
-    Date TimeSend;
+    private String UserName;
+    private String Message;
+    private Date TimeSend;
     
     public Message(String usr, String msg ){
         this.UserName = usr;
