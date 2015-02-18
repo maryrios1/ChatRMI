@@ -26,7 +26,7 @@ public class ClientRMI {
     final String HOST="localhost";
     static Registry registry;// = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
     static InterfaceChat remote;// = (InterfaceChat) registry.lookup(Constants.RMI_ID);
-    
+
     public ClientRMI() throws RemoteException, NotBoundException, Exception{
         registry = LocateRegistry.getRegistry(HOST, Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
@@ -36,9 +36,9 @@ public class ClientRMI {
         return remote.isLoginValid(user);
     }
     
-    public List<Message> getMesssages() throws Exception{
-        //List<Message> listMessage = remote.getMessage();
-        return null;
+    public List<Message> getMesssages(String user) throws Exception{
+        List<Message> listMessage = remote.getMessage(user);
+        return listMessage;
     }
     
     public void sendMessage(Message msg) throws RemoteException{
