@@ -13,10 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument; 
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -27,13 +24,7 @@ import javax.swing.text.StyledDocument;
  * 
  */
     public class ClientChat extends javax.swing.JFrame implements Runnable {
-    public String formatList(List<String> list){
-        String listofUsers="";
-        for(String user: list){
-            listofUsers+=user+"\n";
-        }
-        return listofUsers;
-    }
+    
     /**
      * Creates new form Chat
      */
@@ -41,6 +32,11 @@ import javax.swing.text.StyledDocument;
     public ClientChat(String user) {
         userName=user;
         initComponents();
+        scroll = jScrollPane3.getVerticalScrollBar();
+        getColors();
+        tpn_ListUsers.setContentType("text/html");
+        tpn_Messages.setContentType("text/html");
+        
         try {
             this.clientRMI = new ClientRMI();
           
@@ -49,7 +45,7 @@ import javax.swing.text.StyledDocument;
             
             tUsers=new Thread(() -> {
                 List<String> listUsers = new ArrayList<>();
-                Message userjoined=new Message(userName,"se ha unido a la platica   <<<");
+                Message userjoined=new Message(userName,"se ha unido a la platica   <<<","Login");
                 try {
                     clientRMI.sendMessage(userjoined);
                 } catch (RemoteException ex) {
@@ -59,13 +55,7 @@ import javax.swing.text.StyledDocument;
                     while(true){
                         listUsers = clientRMI.getUsers();
                         if(listUsers != null && listUsers.size()>0){
-                            tpn_ListUsers.setText(formatList(listUsers));
-                            /*
-                            StyledDocument doc = jTextPane1.getStyledDocument();
-                            addStylesToDocument(doc);
-                            doc.insertString(doc.getLength(),message.getUser() + ": " +
-                            message.getMessage() + "\n",null);
-                            */
+                            tpn_ListUsers.setText(formatList(listUsers).toString());
                         }
                         Thread.sleep(10000);
                     }
@@ -252,7 +242,7 @@ import javax.swing.text.StyledDocument;
     private void btn_SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SendActionPerformed
         // TODO add your handling code here:
         try {
-            Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText());
+            Message msg = new Message(lbl_User.getText(), txtCurrentMsg.getText(),"");
             clientRMI.sendMessage(msg);
             txtCurrentMsg.setText("");
         } catch (RemoteException ex) {
@@ -262,7 +252,7 @@ import javax.swing.text.StyledDocument;
     public void closeSession(){
         try {
             clientRMI.logOut(lbl_User.getText());
-            Message userleaved=new Message(userName, "se ha retirado a la platica   <<<");
+            Message userleaved=new Message(userName, "se ha retirado a la platica   <<<","Login");
                 try {
                     clientRMI.sendMessage(userleaved);
                 } catch (RemoteException ex) {
@@ -357,28 +347,33 @@ import javax.swing.text.StyledDocument;
     Thread tSendMessage;
     ClientRMI clientRMI;
     private final String  userName;
+    List<String> listColors =  new ArrayList<>();
+    StringBuilder conversation = new StringBuilder();
+    JScrollBar scroll;
     
-    @Override
+    
     public void run() {
-        List <Message> listMessages;// = new ArrayList<Message>();
+        List <Message> listMessages;
         try {
-           
             while (true){
-                //Test, obtiene TODOS los mensajes de la lista de mensajes y 
-                //los pone en el pane
-              tpn_Messages.setText("");
-              listMessages = clientRMI.getMesssages();
+              listMessages = clientRMI.getMesssages(userName);
+              
                 if(listMessages != null && listMessages.size()>0){
-               
-                for (Message message : listMessages) {
-                  StyledDocument doc = tpn_Messages.getStyledDocument();
-                  addStylesToDocument(doc);    
-                  doc.insertString(doc.getLength(),message.getUser() + ": " + 
-                           message.getMessage() + "\n",null);
-               }
-                //threadMessage("Lista de mensajes insertada");
-                } 
-                 Thread.sleep(1000);
+                    for (Message message : listMessages) {
+                        if(message.getType().equals("")){
+                            conversation.append( "<p style=\"margin-top: 0;color:blue\">" + message.getTime() + " - " + message.getUser()+":</p>");
+                            conversation.append( "<p style=\"margin-top: 0;color:black\">" + message.getMessage() + "</p>");
+                        }
+                        else
+                            conversation.append( "<p style=\"margin-top: 0;color:red\">" + message.getUser() + " " + message.getMessage() + "</p>");
+                    }
+                    tpn_Messages.setText(conversation.toString());
+                    //scroll.setValue( scroll.getMaximum() );
+                    //jScrollPane3.getViewport().scrollRectToVisible(null);
+                    tpn_Messages.setCaretPosition(tpn_Messages.getDocument().getLength());
+                    
+                }
+                Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             threadMessage("I wasn't done!");
@@ -387,25 +382,35 @@ import javax.swing.text.StyledDocument;
             Logger.getLogger("Error: list msgs, " + ClientChat.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    private void getColors() {
+        listColors.add("Purple");
+        listColors.add("Pink");
+        listColors.add("Red");
+        listColors.add("Black");
+        listColors.add("Gray");
+        listColors.add("Green");
+        listColors.add("Blue");
+        listColors.add("Yellow");
+        listColors.add("Brown");
+        /*listColors.add("Green");
+        listColors.add("Green");
+        listColors.add("Green");*/
+        
+    }
     
-    protected void addStylesToDocument(StyledDocument doc) {
-        //Initialize some styles.
-        Style def = StyleContext.getDefaultStyleContext().
-                        getStyle(StyleContext.DEFAULT_STYLE);
- 
-        Style regular = doc.addStyle("regular", def);
-        StyleConstants.setFontFamily(def, "SansSerif");
- 
-        Style s = doc.addStyle("italic", regular);
-        StyleConstants.setItalic(s, true);
- 
-        s = doc.addStyle("bold", regular);
-        StyleConstants.setBold(s, true);
- 
-        s = doc.addStyle("small", regular);
-        StyleConstants.setFontSize(s, 10);
- 
-        s = doc.addStyle("large", regular);
-        StyleConstants.setFontSize(s, 16);
+    public StringBuilder formatList(List<String> list){
+        StringBuilder listofUsers = new StringBuilder();
+        int i=0;
+        for(String user: list){
+            
+            if(!user.equals(userName))
+                listofUsers.append("<p style=\"margin-top: 0;color=" + listColors.get(i) + "\">" + user + "</p>");
+            i++;
+            if(i==listColors.size())
+                i=0;
+        }
+        return listofUsers;
     }
 }
+
