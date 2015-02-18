@@ -36,9 +36,7 @@ public class ChatRMI {
             }
         }if(args[1].equals("cliente")){
             LoginChat x =  new LoginChat();
-            x.setVisible(true);
-            //x =  new LoginChat();
-           // x.setVisible(true);
+            x.setVisible(true);       
         }
         // TODO code application logic here
     }
