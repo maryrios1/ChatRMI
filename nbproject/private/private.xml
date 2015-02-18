@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/Codes/ChatRMI/src/chatrmi/impl/ServerRMI.java</file>
             <file>file:/E:/Codes/ChatRMI/src/chatrmi/impl/ClientRMI.java</file>
+            <file>file:/E:/Codes/ChatRMI/src/chatrmi/ui/LoginChat.java</file>
+            <file>file:/E:/Codes/ChatRMI/src/chatrmi/ChatRMI.java</file>
             <file>file:/E:/Codes/ChatRMI/src/chatrmi/ui/ClientChat.java</file>
             <file>file:/E:/Codes/ChatRMI/src/chatrmi/impl/RemoteImpl.java</file>
-            <file>file:/E:/Codes/ChatRMI/src/chatrmi/remote/Message.java</file>
             <file>file:/E:/Codes/ChatRMI/src/chatrmi/remote/InterfaceChat.java</file>
         </group>
     </open-files>
