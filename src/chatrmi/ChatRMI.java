@@ -33,14 +33,14 @@ public class ChatRMI {
                 s.init();
             } catch (RemoteException | AlreadyBoundException ex) {
                 Logger.getLogger(ChatRMI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }if(args[1].equals("cliente")){
-            LoginChat x =  new LoginChat();
-            x.setVisible(true);
-            //x =  new LoginChat();
-           // x.setVisible(true);
-        }
-        // TODO code application logic here
+            }}
+//        }if(args[1].equals("cliente")){
+//            LoginChat x =  new LoginChat();
+//            x.setVisible(true);
+//            //x =  new LoginChat();
+//           // x.setVisible(true);
+//        }
+//        // TODO code application logic here
     }
     
 }
