@@ -367,16 +367,22 @@ import javax.swing.text.StyledDocument;
                 //Test, obtiene TODOS los mensajes de la lista de mensajes y 
                 //los pone en el pane
               tpn_Messages.setText("");
-              listMessages = clientRMI.getMesssages();
+              listMessages = clientRMI.getMesssages(userName);
                 if(listMessages != null && listMessages.size()>0){
-               
+                
+                    
+                listMessages.forEach(
+                        message->{
+                            
+                        }
+                );
                 for (Message message : listMessages) {
                   StyledDocument doc = tpn_Messages.getStyledDocument();
                   addStylesToDocument(doc);    
                   doc.insertString(doc.getLength(),message.getUser() + ": " + 
                            message.getMessage() + "\n",null);
                }
-                //threadMessage("Lista de mensajes insertada");
+                threadMessage("Lista de mensajes insertada");
                 } 
                  Thread.sleep(1000);
             }
