@@ -6,17 +6,25 @@
 package chatrmi.impl;
 import chatrmi.remote.InterfaceChat;
 import chatrmi.remote.Message;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author lheredia
  */
 public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
-    String username;
+    private String username;
     //List <User> listUser = new ArrayList<User>();
     List <String> listUser = new ArrayList<>();
     List <Message> listMessages = new ArrayList<>();
@@ -28,7 +36,12 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
         username =  username.toLowerCase();
         if(!listUser.contains(username)){
             listUser.add(username);
-            this.username = username;
+            Path file=Paths.get(username+".inbox");
+            try {
+                Files.createFile(file);
+            } catch (IOException ex) {
+                Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return "OK";
         }
         else
@@ -46,8 +59,21 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
 
     @Override
     public void send(Message  msg) throws RemoteException {
-                  
+        listUser.forEach(
+                user->{
+                    Path file=Paths.get(msg.getUser()+".inbox");
+                    try(
+                        ObjectOutputStream output=new ObjectOutputStream(Files.newOutputStream(file,StandardOpenOption.APPEND));
+                    ){
+                        output.writeObject(msg);
+                    } catch (IOException ex) {
+                        Logger.getLogger(RemoteImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+        );
         System.out.println(msg.getUser() + ": " + msg.getMessage());
+        
+        
         listMessages.add(msg);
         //sendAll(message);
         //return msg;
@@ -64,7 +90,8 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     }
 
     @Override
-    public List<Message> getMessage() throws RemoteException {
+    public List<Message> getMessage(String user) throws RemoteException {
+        
         return listMessages;
     }
 

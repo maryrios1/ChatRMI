@@ -21,6 +21,6 @@ public interface InterfaceChat  extends Remote{
     public String receive() throws RemoteException;
     public void getStatus(String msg)throws RemoteException;
     public void sendAll(Message msg)throws RemoteException;
-    public List<Message> getMessage()throws RemoteException;
+    public List<Message> getMessage(String user)throws RemoteException;
     public List<String> getUsers() throws RemoteException;   
 }
