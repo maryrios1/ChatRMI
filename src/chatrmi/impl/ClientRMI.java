@@ -36,9 +36,9 @@ public class ClientRMI {
         return remote.isLoginValid(user);
     }
     
-    public List<Message> getMesssages() throws Exception{
+    public List<Message> getMesssages(String user) throws Exception{
         //List<Message> listMessage = remote.getMessage();
-        return null;
+        return remote.getMessage(user);
     }
     
     public void sendMessage(Message msg) throws RemoteException{
