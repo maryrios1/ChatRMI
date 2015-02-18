@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JScrollBar;
 
 /**
  *
@@ -32,7 +31,6 @@ import javax.swing.JScrollBar;
     public ClientChat(String user) {
         userName=user;
         initComponents();
-        scroll = jScrollPane3.getVerticalScrollBar();
         getColors();
         tpn_ListUsers.setContentType("text/html");
         tpn_Messages.setContentType("text/html");
@@ -56,6 +54,12 @@ import javax.swing.JScrollBar;
                         listUsers = clientRMI.getUsers();
                         if(listUsers != null && listUsers.size()>0){
                             tpn_ListUsers.setText(formatList(listUsers).toString());
+                            /*
+                            StyledDocument doc = jTextPane1.getStyledDocument();
+                            addStylesToDocument(doc);
+                            doc.insertString(doc.getLength(),message.getUser() + ": " +
+                            message.getMessage() + "\n",null);
+                            */
                         }
                         Thread.sleep(10000);
                     }
@@ -349,9 +353,7 @@ import javax.swing.JScrollBar;
     private final String  userName;
     List<String> listColors =  new ArrayList<>();
     StringBuilder conversation = new StringBuilder();
-    JScrollBar scroll;
-    
-    
+   
     public void run() {
         List <Message> listMessages;
         try {
@@ -368,8 +370,6 @@ import javax.swing.JScrollBar;
                             conversation.append( "<p style=\"margin-top: 0;color:red\">" + message.getUser() + " " + message.getMessage() + "</p>");
                     }
                     tpn_Messages.setText(conversation.toString());
-                    //scroll.setValue( scroll.getMaximum() );
-                    //jScrollPane3.getViewport().scrollRectToVisible(null);
                     tpn_Messages.setCaretPosition(tpn_Messages.getDocument().getLength());
                     
                 }
