@@ -14,9 +14,13 @@ import java.io.Serializable;
  */
 public class User implements Serializable{
     String usr;
+    String color;
+    String status;
     
-    public User(String usr){
+    public User(String usr,String color,String status){
         this.usr = usr;
+        this.color = color;
+        this.status = status;
     }
     
     public String getUser(){
@@ -27,4 +31,19 @@ public class User implements Serializable{
         this.usr = usr;
     }
     
+    public String getColor(){
+        return this.color;
+    }
+    
+    public void setColor(String clr){
+        this.color = clr;
+    }
+    
+    public String getStatus(){
+        return this.status;
+    }
+    
+    public void setStatus(String status){
+        this.status = status;
+    }
 }

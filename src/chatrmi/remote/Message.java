@@ -18,11 +18,13 @@ public class Message implements Serializable,Runnable{
     private String UserName;
     private String Message;
     private Date TimeSend;
+    private String Type;
     
-    public Message(String usr, String msg ){
+    public Message(String usr, String msg,String type ){
         this.UserName = usr;
         this.Message = msg;
         this.TimeSend = new Date();
+        this.Type = type;
     }
     
     public String getMessage(){
@@ -39,6 +41,14 @@ public class Message implements Serializable,Runnable{
     
     public void setUser(String usr){
         this.UserName = usr;
+    }
+    
+    public void setType(String type){
+        this.Type = type;
+    }
+    
+    public String getType(){
+        return this.Type;
     }
     
     public Date getTime(){

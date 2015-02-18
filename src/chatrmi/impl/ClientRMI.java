@@ -37,8 +37,8 @@ public class ClientRMI {
     }
     
     public List<Message> getMesssages(String user) throws Exception{
-        List<Message> listMessage = remote.getMessage(user);
-        return listMessage;
+        //List<Message> listMessage = remote.getMessage();
+        return remote.getMessage(user);
     }
     
     public void sendMessage(Message msg) throws RemoteException{
