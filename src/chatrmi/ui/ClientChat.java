@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -101,6 +102,7 @@ import java.util.logging.Logger;
         mit_CloseSession = new javax.swing.JMenuItem();
         mit_Exit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -178,7 +180,16 @@ import java.util.logging.Logger;
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("?");
+
+        jMenuItem2.setText("about");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -260,7 +271,7 @@ import java.util.logging.Logger;
     public void closeSession(){
         try {
             clientRMI.logOut(lbl_User.getText());
-            Message userleaved=new Message(userName, "se ha retirado a la platica   <<<","Login");
+            Message userleaved=new Message(userName, "se ha retirado a la platica","Login");
                 try {
                     clientRMI.sendMessage(userleaved);
                 } catch (RemoteException ex) {
@@ -280,6 +291,10 @@ import java.util.logging.Logger;
         closeSession();
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        JOptionPane.showMessageDialog(null, "Conected to: "+clientRMI.getHost()+":"+clientRMI.getPort(), "InfoBox: " , JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void txtCurrentMsgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCurrentMsgKeyPressed
         // TODO add your handling code here:
@@ -350,6 +365,7 @@ import java.util.logging.Logger;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
