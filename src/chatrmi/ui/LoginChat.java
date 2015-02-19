@@ -13,7 +13,11 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author mary
+ *  @author Mary Carmen Ríos Ramírez
+ *  @author Laura Lizeth Heredia Manzano 
+ *  @author Carlos Iván Castillo Sepúlveda
+ *  @since 2015
+ * 
  */
 public class LoginChat extends javax.swing.JFrame {
 
@@ -91,19 +95,18 @@ public class LoginChat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_EntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EntrarActionPerformed
-        // TODO add your handling code here:
         try{
-        ClientRMI clientRMI = new ClientRMI();
+        ClientRMI clientRMI = new ClientRMI(HOST);
         
         //System.out.println(remote.isLoginValid("ak"));
         //System.out.println(remote.isLoginValid("test"));
         //remote.send();
         if(!txt_User.getText().isEmpty()){
         String user=txt_User.getText();
-        String msg= clientRMI.isLoginValid(user);
+        String msg=user.equals("")?"Error: Debes elegir un nombre":clientRMI.isLoginValid(user);
             if( msg.equals("OK"))
             {
-                ClientChat wd = new ClientChat(user);
+                ClientChat wd = new ClientChat(user,clientRMI);
                 JLabel lbl =  wd.getLabel();
                 lbl.setText(txt_User.getText());
                 wd.setVisible(true);
@@ -162,14 +165,13 @@ public class LoginChat extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LoginChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
+            
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new LoginChat().setVisible(true);
         });
     }
-
+    private static String HOST;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Entrar;
     private javax.swing.JLabel jLabel1;

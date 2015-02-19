@@ -23,21 +23,22 @@ import java.util.List;
  * 
  */
 public class ClientRMI {
-    final String HOST="localhost";
-    static Registry registry;// = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
-    static InterfaceChat remote;// = (InterfaceChat) registry.lookup(Constants.RMI_ID);
+    final String HOST;
+    static Registry registry;
+    static InterfaceChat remote;
 
-    public ClientRMI() throws RemoteException, NotBoundException, Exception{
+    public ClientRMI(String host) throws RemoteException, NotBoundException, Exception{
+        HOST=host;
         registry = LocateRegistry.getRegistry(HOST, Constants.RMI_PORT);
         remote = (InterfaceChat) registry.lookup(Constants.RMI_ID);
     }
+
     
     public String isLoginValid(String user) throws Exception{
         return remote.isLoginValid(user);
     }
     
     public List<Message> getMesssages(String user) throws Exception{
-        //List<Message> listMessage = remote.getMessage();
         return remote.getMessage(user);
     }
     
