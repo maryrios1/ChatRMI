@@ -3,6 +3,7 @@ package chatrmi.ui;
 import chatrmi.impl.ClientRMI;
 import chatrmi.remote.Message;
 import java.awt.event.KeyEvent;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
