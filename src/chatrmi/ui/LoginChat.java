@@ -12,7 +12,11 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author mary
+ *  @author Mary Carmen Ríos Ramírez
+ *  @author Laura Lizeth Heredia Manzano 
+ *  @author Carlos Iván Castillo Sepúlveda
+ *  @since 2015
+ * 
  */
 public class LoginChat extends javax.swing.JFrame {
 
@@ -77,18 +81,13 @@ public class LoginChat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_EntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_EntrarActionPerformed
-        // TODO add your handling code here:
         try{
-        ClientRMI clientRMI = new ClientRMI();
-        
-        //System.out.println(remote.isLoginValid("ak"));
-        //System.out.println(remote.isLoginValid("test"));
-        //remote.send();
+        ClientRMI clientRMI = new ClientRMI(HOST);
         String user=txt_User.getText();
-        String msg= clientRMI.isLoginValid(user);
+        String msg=user.equals("")?"Error: Debes elegir un nombre":clientRMI.isLoginValid(user);
             if( msg.equals("OK"))
             {
-                ClientChat wd = new ClientChat(user);
+                ClientChat wd = new ClientChat(user,clientRMI);
                 JLabel lbl =  wd.getLabel();
                 lbl.setText(txt_User.getText());
                 wd.setVisible(true);
@@ -107,35 +106,18 @@ public class LoginChat extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginChat.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        if(args.length>0){
+            HOST=args[0];
+        }else{
+            HOST="localhost";
         }
-        //</editor-fold>
-
+            
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new LoginChat().setVisible(true);
         });
     }
-
+    private static String HOST;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Entrar;
     private javax.swing.JLabel jLabel1;

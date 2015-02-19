@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
 import chatrmi.remote.Message;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +22,11 @@ import java.util.logging.Logger;
     /**
      * Creates new form Chat
      */
-    public ClientChat(){this("default");}
-    public ClientChat(String user) {
+    public ClientChat() throws NotBoundException, Exception{
+        this("default",new ClientRMI("localhost"));
+        
+    }
+    public ClientChat(String user, ClientRMI client) {
         userName=user;
         initComponents();
         getColors();
@@ -36,7 +34,7 @@ import java.util.logging.Logger;
         tpn_Messages.setContentType("text/html");
         
         try {
-            this.clientRMI = new ClientRMI();
+            this.clientRMI = client;
           
             tMessages=new Thread(this,"HiloMensajes");
             tMessages.start();
@@ -322,7 +320,11 @@ import java.util.logging.Logger;
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ClientChat().setVisible(true);
+            try {
+                new ClientChat().setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(ClientChat.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
 
@@ -363,11 +365,11 @@ import java.util.logging.Logger;
                 if(listMessages != null && listMessages.size()>0){
                     for (Message message : listMessages) {
                         if(message.getType().equals("")){
-                            conversation.append( "<p style=\"margin-top: 0;color:blue\">" + message.getTime() + " - " + message.getUser()+":</p>");
-                            conversation.append( "<p style=\"margin-top: 0;color:black\">" + message.getMessage() + "</p>");
+                            conversation.append("<p style=\"margin-top: 0;color:blue\">").append(message.getTime()).append(" - ").append(message.getUser()).append(":</p>");
+                            conversation.append("<p style=\"margin-top: 0;color:black\">").append(message.getMessage()).append("</p>");
                         }
                         else
-                            conversation.append( "<p style=\"margin-top: 0;color:red\">" + message.getUser() + " " + message.getMessage() + "</p>");
+                            conversation.append("<p style=\"margin-top: 0;color:red\">").append(message.getUser()).append(" ").append(message.getMessage()).append("</p>");
                     }
                     tpn_Messages.setText(conversation.toString());
                     tpn_Messages.setCaretPosition(tpn_Messages.getDocument().getLength());
@@ -392,11 +394,7 @@ import java.util.logging.Logger;
         listColors.add("Green");
         listColors.add("Blue");
         listColors.add("Yellow");
-        listColors.add("Brown");
-        /*listColors.add("Green");
-        listColors.add("Green");
-        listColors.add("Green");*/
-        
+        listColors.add("Brown");   
     }
     
     public StringBuilder formatList(List<String> list){
@@ -405,7 +403,7 @@ import java.util.logging.Logger;
         for(String user: list){
             
             if(!user.equals(userName))
-                listofUsers.append("<p style=\"margin-top: 0;color=" + listColors.get(i) + "\">" + user + "</p>");
+                listofUsers.append("<p style=\"margin-top: 0;color=").append(listColors.get(i)).append("\">").append(user).append("</p>");
             i++;
             if(i==listColors.size())
                 i=0;

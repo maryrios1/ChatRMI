@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  @author Mary Carmen Ríos Ramírez
+ *  @author Laura Lizeth Heredia Manzano 
+ *  @author Carlos Iván Castillo Sepúlveda
+ *  @since 2015
  */
 package chatrmi.impl;
 import chatrmi.remote.InterfaceChat;
@@ -21,9 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
- *
- * @author lheredia
+ *  Esta clase trabaja como server 
+ * 
+ * 
  */
 public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
     private String username;
@@ -49,10 +52,6 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
         return this.username;
     }
 
-    public void setUsername() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public void send(Message  msg) throws RemoteException {
         listUser.forEach(
@@ -63,16 +62,6 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
         );
         System.out.println(msg.getUser() + ": " + msg.getMessage());
         listMessages.add(msg);
-    }
-
-    @Override
-    public String receive() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void sendAll(Message msg) throws RemoteException {
-        
     }
 
     @Override
@@ -142,20 +131,10 @@ public class RemoteImpl extends UnicastRemoteObject implements InterfaceChat {
         }
         return listMessages;
     }
-    
-    @Override
-    public void setUsername(String oldName, String newName) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void getStatus(String msg) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     /**
      *
-     * @return
+     * @return a list with the registered users
+     *
      * @throws RemoteException
      */
     @Override
