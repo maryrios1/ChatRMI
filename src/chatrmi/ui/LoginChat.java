@@ -1,6 +1,7 @@
 package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
+import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -21,6 +22,7 @@ public class LoginChat extends javax.swing.JFrame {
      */
     public LoginChat() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -37,6 +39,18 @@ public class LoginChat extends javax.swing.JFrame {
         btn_Entrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 0, 255));
+
+        txt_User.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_UserActionPerformed(evt);
+            }
+        });
+        txt_User.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_UserKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Ingresa tu usuario");
 
@@ -84,6 +98,7 @@ public class LoginChat extends javax.swing.JFrame {
         //System.out.println(remote.isLoginValid("ak"));
         //System.out.println(remote.isLoginValid("test"));
         //remote.send();
+        if(!txt_User.getText().isEmpty()){
         String user=txt_User.getText();
         String msg= clientRMI.isLoginValid(user);
             if( msg.equals("OK"))
@@ -96,12 +111,30 @@ public class LoginChat extends javax.swing.JFrame {
             }
             else
                 JOptionPane.showMessageDialog(rootPane, msg);
-        
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Username no valid ", "InfoBox: " + "Username", JOptionPane.INFORMATION_MESSAGE); 
+        }
         }catch(Exception e){
             System.out.println("ERROR: " + e.getMessage());
         }
         
     }//GEN-LAST:event_btn_EntrarActionPerformed
+
+    private void txt_UserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_UserKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            
+            btn_Entrar.doClick();
+            txt_User.setText("");
+            
+        }
+            
+    }//GEN-LAST:event_txt_UserKeyPressed
+
+    private void txt_UserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_UserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_UserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -113,6 +146,7 @@ public class LoginChat extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
+            
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());

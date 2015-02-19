@@ -8,6 +8,7 @@ package chatrmi.ui;
 
 import chatrmi.impl.ClientRMI;
 import chatrmi.remote.Message;
+import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
     public ClientChat(String user) {
         userName=user;
         initComponents();
+        this.setLocationRelativeTo(null);
         getColors();
         tpn_ListUsers.setContentType("text/html");
         tpn_Messages.setContentType("text/html");
@@ -117,6 +119,11 @@ import java.util.logging.Logger;
 
         txtCurrentMsg.setColumns(20);
         txtCurrentMsg.setRows(5);
+        txtCurrentMsg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCurrentMsgKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(txtCurrentMsg);
 
         btn_Send.setText("Enviar");
@@ -276,6 +283,14 @@ import java.util.logging.Logger;
         closeSession();
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
+
+    private void txtCurrentMsgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCurrentMsgKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            System.out.println("hey");
+            btn_Send.doClick();
+        }
+    }//GEN-LAST:event_txtCurrentMsgKeyPressed
 
     public javax.swing.JLabel getLabel() {
         return lbl_User;
